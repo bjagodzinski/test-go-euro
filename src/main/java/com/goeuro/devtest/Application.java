@@ -33,14 +33,15 @@ public class Application {
         String urlResponse          = getUrlResponse(cityHint);
         List<Position> positions    = getPositions(urlResponse);
 
-        wrtiteToFile(cityHint, positions);
+        writeToFile(cityHint, positions);
 
         out.println("Export to CSV finished. Press any key to continue...");
         in.read();
     }
 
     /**
-     * Validates the input arguments
+     * Validates the input arguments. If validation is not passed
+     * the JVM exits.
      *
      * @param args
      */
@@ -58,10 +59,8 @@ public class Application {
      *
      * @param cityHint
      * @param positions
-     *
-     * @throws IOException
      */
-    private static void wrtiteToFile(String cityHint, List<Position> positions) {
+    private static void writeToFile(String cityHint, List<Position> positions) {
 
         if ( positions != null && !positions.isEmpty() ) {
 
@@ -69,7 +68,7 @@ public class Application {
                 FileUtils.writeToFile(cityHint, positions);
             } catch (IOException e) {
                 err.println("ERROR: Exception when writing to file. The message is:\n" + e.getMessage());
-                exit(0);
+                throw new RuntimeException(e);
             }
 
         } else {
@@ -92,10 +91,8 @@ public class Application {
 
         } catch (IOException e) {
             err.println("ERROR: Exception when processing url response. The message is:\n" + e.getMessage());
-            exit(0);
+            throw new RuntimeException(e);
         }
-
-        return null;
 
     }
 
@@ -114,17 +111,16 @@ public class Application {
             return URLStreamReader.readFromURL(urlWithCityName);
 
         } catch (ConnectException ce) {
-            err.println("Timeout occurred. Please check your connection.");
-            exit(0);
+            err.println("ERROR: Timeout occurred. Please check your connection.");
+            throw new RuntimeException(ce);
         } catch (UnknownHostException uhe) {
-            err.println("Unreachable host at given url " + Constants.URL_STRING);
-            exit(0);
+            err.println("ERROR: Unreachable host at given url " + Constants.URL_STRING);
+            throw new RuntimeException(uhe);
         } catch (IOException e) {
-            err.println("Unexpected connection problem. The message is:\n" + e.getMessage());
-            exit(0);
+            err.println("ERROR: Unexpected connection problem. The message is:\n" + e.getMessage());
+            throw new RuntimeException(e);
         }
 
-        return null;
     }
 
 }
