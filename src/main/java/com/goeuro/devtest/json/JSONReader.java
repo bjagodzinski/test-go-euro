@@ -18,7 +18,6 @@ import java.util.List;
 public final class JSONReader {
 
     private final ObjectMapper mapper = new ObjectMapper();
-    private final ObjectWriter writer = mapper.writer();
 
     private JSONReader() {
     }
@@ -51,16 +50,4 @@ public final class JSONReader {
         return csvRows;
     }
 
-    /**
-     * Writes the array of jsonObjects to given file.
-     *
-     * @param file file t write to
-     * @param jsonObjects list of JSON objects
-     *
-     * @throws IOException
-     */
-    public void writeToFile(File file, List<?> jsonObjects) throws IOException {
-
-        writer.writeValue( file, jsonObjects );
-    }
 }

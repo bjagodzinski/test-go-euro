@@ -1,7 +1,7 @@
 package com.goeuro.devtest.json.model;
 
 /**
- * Model class for GOGRAPHIC POSITION.
+ * Model class for GeoPosition.
  *
  * Created by bjagodzinski on 2016-08-04.
  */
